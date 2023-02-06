@@ -14,7 +14,7 @@ namespace GitRepoInfoTestTask.Controllers
         }
 
         [HttpGet("{branchname}")]
-        public IActionResult GetByBranch(Branch branch)
+        public IActionResult GetByBranch(BranchDTO branch)
         {
             return NotFound();
         }

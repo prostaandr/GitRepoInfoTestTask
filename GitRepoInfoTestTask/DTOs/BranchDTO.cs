@@ -1,6 +1,6 @@
 ﻿namespace GitRepoInfoTestTask.Models
 {
-    public class Branch
+    public class BranchDTO
     {
         public string Name { get; set; }
     }
