@@ -8,7 +8,7 @@ namespace GitRepoInfoTestTask.Controllers
     [ApiController]
     public class TagsController : ControllerBase
     {
-        private readonly Repository _repository = new Repository("C:\\Users\\prost\\source\\repos\\AppForTestTask");
+        private readonly Repository _repository = new Repository(RepositoryConnection.ConnectionPath);
 
         [HttpGet]
         public IActionResult GetAll()
@@ -26,7 +26,7 @@ namespace GitRepoInfoTestTask.Controllers
                 {
                     Name = tag.FriendlyName,
                     Author = tag.IsAnnotated ? tag.Annotation.Tagger.Name : "",
-                    Message = tag.IsAnnotated ? tag.Annotation.Message : ""
+                    Message = tag.IsAnnotated ? tag.Annotation.Message.Replace("\n", "") : "" // Использую Replace, так как на конце сообщения остается \n, которое видно в JSON
                 };
 
                 tagsDto.Add(dto);

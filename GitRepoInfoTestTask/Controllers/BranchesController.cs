@@ -8,13 +8,13 @@ namespace GitRepoInfoTestTask.Controllers
     [ApiController]
     public class BranchesController : ControllerBase
     {
-        private readonly Repository _repository = new Repository("C:\\Users\\prost\\source\\repos\\AppForTestTask");
+        private readonly Repository _repository = new Repository(RepositoryConnection.ConnectionPath);
 
         [HttpGet]
         public IActionResult GetAll()
         {
             var branches = _repository.Branches;
-
+            
             if (branches == null)
                 return NotFound();
 

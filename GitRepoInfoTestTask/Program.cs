@@ -1,3 +1,5 @@
+using GitRepoInfoTestTask;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +10,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// Установка пути к локальному Git-репозиторию 
+RepositoryConnection.ConnectionPath = "";
+
+if (RepositoryConnection.ConnectionPath == "" || RepositoryConnection.ConnectionPath == null)
+{
+    throw new NullReferenceException("Пустой путь к локальному Git-репозиторию. ");
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

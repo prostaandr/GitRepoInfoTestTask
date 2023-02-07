@@ -8,7 +8,7 @@ namespace GitRepoInfoTestTask.Controllers
     [ApiController]
     public class CommitsController : ControllerBase
     {
-        private readonly Repository _repository = new Repository("C:\\Users\\prost\\source\\repos\\AppForTestTask");
+        private readonly Repository _repository = new Repository(RepositoryConnection.ConnectionPath);
 
         [HttpGet]
         public IActionResult GetAll()
@@ -26,7 +26,7 @@ namespace GitRepoInfoTestTask.Controllers
                 {
                     Author = commit.Author.Name,
                     CreateDate = commit.Committer.When.DateTime,
-                    Message = commit.Message
+                    Message = commit.Message.Replace("\n", "") // Использую Replace, так как на конце сообщения остается \n, которое видно в JSON
                 };
 
                 commitsDto.Add(dto);
@@ -53,7 +53,7 @@ namespace GitRepoInfoTestTask.Controllers
                 {
                     Author = commit.Author.Name,
                     CreateDate = commit.Committer.When.DateTime,
-                    Message = commit.Message
+                    Message = commit.Message.Replace("\n", "") // Использую Replace, так как на конце сообщения остается \n, которое видно в JSON
                 };
 
                 commitsDto.Add(dto);
