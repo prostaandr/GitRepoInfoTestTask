@@ -1,4 +1,5 @@
 ﻿using GitRepoInfoTestTask.Models;
+using LibGit2Sharp;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GitRepoInfoTestTask.Controllers
@@ -7,16 +8,59 @@ namespace GitRepoInfoTestTask.Controllers
     [ApiController]
     public class CommitsController : ControllerBase
     {
+        private readonly Repository _repository = new Repository("C:\\Users\\prost\\source\\repos\\AppForTestTask");
+
         [HttpGet]
         public IActionResult GetAll()
         {
-            return NotFound();
+            var commits = _repository.Commits.QueryBy(new CommitFilter { IncludeReachableFrom = _repository.Refs });
+
+            if (commits == null)
+                return NotFound();
+
+            var commitsDto = new List<CommitDTO>();
+
+            foreach (var commit in commits)
+            {
+                var dto = new CommitDTO()
+                {
+                    Author = commit.Author.Name,
+                    CreateDate = commit.Committer.When.DateTime,
+                    Message = commit.Message
+                };
+
+                commitsDto.Add(dto);
+            }
+
+            return Ok(commitsDto);
         }
 
         [HttpGet("{branchname}")]
-        public IActionResult GetByBranch(BranchDTO branch)
+        public IActionResult GetByBranch(string branchname)
         {
-            return NotFound();
+            var branch = _repository.Branches.Where(b => b.FriendlyName == branchname).FirstOrDefault();
+
+            if (branch == null)
+                return NotFound();
+
+            var commits = branch.Commits;
+
+            var commitsDto = new List<CommitDTO>();
+
+            foreach (var commit in commits)
+            {
+                var dto = new CommitDTO()
+                {
+                    Author = commit.Author.Name,
+                    CreateDate = commit.Committer.When.DateTime,
+                    Message = commit.Message
+                };
+
+                commitsDto.Add(dto);
+            }
+
+            return Ok(commitsDto);
+
         }
     }
 }
